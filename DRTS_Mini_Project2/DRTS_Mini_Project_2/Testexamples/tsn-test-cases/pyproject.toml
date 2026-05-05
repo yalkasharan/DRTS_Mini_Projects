@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "tsn-case-gen"
+version = "0.1.0"
+description = "TSN test case generator & utilities"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "tsn_case_gen_" }]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+typer = ">=0.12"
+rich = ">=13.7"
+networkx = ">=3.0,<3.5"
+numpy = ">=1.24,<2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+ruff = "*"
+mypy = "*"
+
+[tool.poetry.scripts]
+tsn-case-gen = "tsn_case_gen_.__main__:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest-mock = "^3.14.1"
+hypothesis = "^6.138.3"
+
+[build-system]
+requires = ["poetry-core>=1.7.0"]
+build-backend = "poetry.core.masonry.api"
