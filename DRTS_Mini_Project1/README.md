@@ -53,32 +53,27 @@ paths run on the standard library alone if those packages are absent.
 DRTS_Mini_Project1/
 ├── README.md                   <- this file
 ├── requirements.txt            <- matplotlib>=3.4.0, numpy>=1.21.0
-├── main.tex                    <- LaTeX report source
+├── results/                    <- output folder for analysis plots and images
 │
-├── tasks/
-│   ├── __init__.py
-│   └── generator.py            <- Task model, load_tasks, calculate_hyperperiod
-│
-├── analysis/
-│   ├── __init__.py
-│   ├── dm_wcrt.py              <- DM Response Time Analysis (Buttazzo Eq. 4.17–4.19)
-│   └── edf_wcrt.py             <- EDF utilization test + Processor Demand Criterion
-│
-├── simulation/
-│   ├── __init__.py
-│   └── simulator.py            <- unified event-driven core (DM & EDF),
-│                                  stochastic simulation, WCRT simulation
-│
-├── reporting/
-│   ├── __init__.py
-│   └── table.py                <- console tables + all Matplotlib figures
-│
-├── comparison/
-│   ├── __init__.py
-│   └── compare.py              <- single-set analysis pipeline + batch sweeps
-│
-└── Main_code/
-    ├── drts_project.py         <- CLI entry point (imports from packages above)
+└── Main_code/                  <- active code, all modules live here
+    ├── drts_project.py         <- CLI entry point
+    ├── tasks/
+    │   ├── __init__.py
+    │   └── generator.py            <- Task model, load_tasks, calculate_hyperperiod
+    ├── analysis/
+    │   ├── __init__.py
+    │   ├── dm_wcrt.py              <- DM Response Time Analysis (Buttazzo Eq. 4.17–4.19)
+    │   └── edf_wcrt.py             <- EDF utilization test + Processor Demand Criterion
+    ├── simulation/
+    │   ├── __init__.py
+    │   └── simulator.py            <- unified event-driven core (DM & EDF),
+    │                                  stochastic simulation, WCRT simulation
+    ├── reporting/
+    │   ├── __init__.py
+    │   └── table.py                <- console tables + all Matplotlib figures
+    ├── comparison/
+    │   ├── __init__.py
+    │   └── compare.py              <- single-set analysis pipeline + batch sweeps
     └── task-sets/
         └── output/
             ├── automotive-utilDist/
@@ -156,11 +151,11 @@ print_batch_summary("Automotive", results)
     Simulating over H = <value> ...
     Max EDF WCRT = <value>
 
-[4] DM Stochastic Simulation (500 runs)
+[4] DM Stochastic Simulation (500 runs, log-normal exec times)
     Max observed RT = <value>
     Avg missed deadlines/run = 0.00
 
-[5] EDF Stochastic Simulation (500 runs)
+[5] EDF Stochastic Simulation (500 runs, log-normal exec times)
     Max observed RT = <value>
     Avg missed deadlines/run = 0.00
 
@@ -187,7 +182,7 @@ bare `U <= 1` test agree on every task set in that bucket (expected for the
 all-implicit-deadline benchmark).  A `!` flags a constrained-deadline bucket
 where using only `U <= 1` would over-report schedulability.
 
-### Plot files (saved next to `drts_project.py`)
+### Plot files (saved to `results/` folder)
 
 | File | Contents |
 |------|----------|
@@ -195,6 +190,8 @@ where using only `U <= 1` would over-report schedulability.
 | `sim_vs_analytical.png` | Scatter: stochastic max RT vs analytical WCRT for DM (left) and EDF (right); points below the diagonal confirm the analytical bound is not violated |
 | `rt_distributions.png` | Per-task CDF grid: DM vs EDF response-time distributions from 200 Monte Carlo runs, with vertical lines at the analytical WCRT bounds and the deadline |
 | `schedulability_dm_vs_edf.png` | Schedulability ratio vs target utilisation for automotive (left) and UUniFast (right) distributions |
+
+All output plots are automatically saved to the `results/` folder in the project root.
 
 ---
 
@@ -272,13 +269,16 @@ preemption, and records response times.  Priority keys:
 
 ### Stochastic simulation — execution time distribution
 
-Each job's execution time is drawn **uniformly at random from
-`[BCET, WCET]`** (discrete uniform).  Rationale: a uniform distribution is
-the maximum-entropy (least-biased) choice when only the execution-time bounds
-are known from the task specification.  Real distributions are typically
-unimodal and right-skewed (log-normal, Weibull), so the uniform model
-provides a distribution-agnostic conservative estimate rather than assuming
-a particular shape.
+Each job's execution time is drawn from a **log-normal distribution** fitted to
+the interval `[BCET, WCET]`. The BCET and WCET are treated as the 1st and 99th
+percentiles of the underlying normal distribution in log-space, yielding a
+realistic right-skewed execution profile consistent with observed embedded
+software behaviour. When BCET ≥ WCET or when BCET < 1, the sampler falls back
+to discrete uniform sampling. Rationale: real software execution times are
+right-skewed with occasional outliers (cache misses, branch mispredictions),
+making the log-normal model more realistic than a uniform distribution while
+preserving the analytical guarantee that all sampled times remain within
+`[BCET, WCET]`.
 
 ### Run count and simulation duration
 
