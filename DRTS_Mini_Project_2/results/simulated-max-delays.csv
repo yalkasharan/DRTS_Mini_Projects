@@ -1,0 +1,11 @@
+stream_id,stream_name,max_observed_delay_us
+0,Stream0,367.549000
+1,Stream1,365.971000
+2,Stream2,547.011000
+3,Stream3,548.589000
+4,Stream4,367.549000
+5,Stream5,365.971000
+6,Stream6,480.851000
+7,Stream7,482.429000
+8,Stream8,520.451000
+9,Stream9,522.029000

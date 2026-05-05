@@ -1,0 +1,17 @@
+# Ignore Python virtual environments
+.venv*
+__pycache__/
+*.pyc
+
+# Ignore test and cache files
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+
+# Ignore OS files
+.DS_Store
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/

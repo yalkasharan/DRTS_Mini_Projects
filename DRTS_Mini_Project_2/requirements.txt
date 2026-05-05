@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+matplotlib
+seaborn
+pandas
+numpy
+=======
+matplotlib>=3.4.0
+numpy>=1.21.0
+>>>>>>> abddfedc1b891782f215ee42a516c952fd5cc3d2
