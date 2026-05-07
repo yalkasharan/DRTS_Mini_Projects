@@ -1,0 +1,69 @@
+{
+  "delay_units": "MICRO_SECOND",
+  "streams": [
+    {
+      "id": 0,
+      "name": "stream-A1",
+      "source": "ES1",
+      "destinations": [
+        {
+          "id": "ES0",
+          "deadline": 2000
+        }
+      ],
+      "type": "ISOCHRONOUS",
+      "PCP": 2,
+      "size": 1500,
+      "period": 160,
+      "redundancy": 0
+    },
+    {
+      "id": 1,
+      "name": "stream-A2",
+      "source": "ES1",
+      "destinations": [
+        {
+          "id": "ES0",
+          "deadline": 2000
+        }
+      ],
+      "type": "ISOCHRONOUS",
+      "PCP": 2,
+      "size": 500,
+      "period": 200,
+      "redundancy": 0
+    },
+    {
+      "id": 2,
+      "name": "stream-B1",
+      "source": "ES1",
+      "destinations": [
+        {
+          "id": "ES0",
+          "deadline": 1000
+        }
+      ],
+      "type": "ISOCHRONOUS",
+      "PCP": 1,
+      "size": 800,
+      "period": 5000,
+      "redundancy": 0
+    },
+    {
+      "id": 3,
+      "name": "stream-BE1",
+      "source": "ES1",
+      "destinations": [
+        {
+          "id": "ES0",
+          "deadline": 1000
+        }
+      ],
+      "type": "ISOCHRONOUS",
+      "PCP": 0,
+      "size": 1000,
+      "period": 10000,
+      "redundancy": 0
+    }
+  ]
+}

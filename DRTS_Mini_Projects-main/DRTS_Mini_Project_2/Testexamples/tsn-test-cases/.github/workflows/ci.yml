@@ -1,0 +1,36 @@
+name: CI
+#on:
+#  push:
+#    branches: [main, tsn-case-gen-Stabilized]
+#  pull_request:
+#    branches: [main, tsn-case-gen-Stabilized]
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.10, 3.11, 3.12]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Lint
+        run: poetry run ruff check .
+      - name: Test
+        run: poetry run pytest
+      - name: CLI smoke test
+        run: poetry run tsn-case-gen --help

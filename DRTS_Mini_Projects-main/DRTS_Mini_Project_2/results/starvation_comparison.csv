@@ -1,0 +1,5 @@
+stream_id,stream_name,priority_class,cbs_wcd_us,sp_wcd_us,deadline_us,cbs_schedulable,sp_schedulable
+0,stream-A1,CLASS_A,573.040,253.040,2000.0,True,True
+1,stream-A2,CLASS_A,733.040,93.040,2000.0,True,True
+2,stream-B1,CLASS_B,701.040,3181.040,1000.0,True,False
+3,stream-BE1,BEST_EFFORT,621.040,6381.040,1000.0,True,False
